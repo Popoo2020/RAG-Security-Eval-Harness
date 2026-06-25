@@ -1,0 +1,11 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="420" viewBox="0 0 900 420">
+  <rect width="900" height="420" fill="#111827"/>
+  <rect x="40" y="40" width="820" height="340" rx="16" fill="#0f172a" stroke="#334155"/>
+  <text x="70" y="90" fill="#e5e7eb" font-family="monospace" font-size="24">RAG Security Evaluation</text>
+  <text x="70" y="135" fill="#93c5fd" font-family="monospace" font-size="18">Dataset-driven review demo</text>
+  <text x="90" y="175" fill="#e5e7eb" font-family="monospace" font-size="16">Source trust: untrusted</text>
+  <text x="90" y="205" fill="#fbbf24" font-family="monospace" font-size="16">Signals: instruction override indicators</text>
+  <text x="90" y="235" fill="#f87171" font-family="monospace" font-size="16">Risk level: HIGH</text>
+  <text x="90" y="265" fill="#e5e7eb" font-family="monospace" font-size="16">Report output: sample_summary.md</text>
+  <text x="70" y="330" fill="#86efac" font-family="monospace" font-size="15">Secure RAG · source trust · repeatable tests</text>
+</svg>

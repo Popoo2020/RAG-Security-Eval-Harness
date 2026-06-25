@@ -9,6 +9,12 @@
 
 ![RAG security evaluation flow](assets/rag-security-eval-flow.svg)
 
+## Portfolio Assets
+
+- [Demo screenshot](screenshots/rag-security-eval-demo.svg)
+- [Case study export source](case-studies/rag-security-eval-case-study.md)
+- [Sample evaluation summary](reports/sample_summary.md)
+
 ## What is implemented
 
 | Capability | Status |
@@ -18,11 +24,13 @@
 | Indirect prompt-injection indicator checks | ✅ Implemented |
 | Evaluation result model | ✅ Implemented |
 | Dataset-driven tests | ✅ Implemented |
+| False-positive / false-negative metrics | ✅ Implemented |
+| Attack detection-rate metric | ✅ Implemented |
 | Summary report generation | ✅ Implemented |
 | CI validation workflow | ✅ Implemented |
 | Model-in-the-loop live evaluation | 🟡 Planned |
 | Vector-store integration | 🟡 Planned |
-| Attack success-rate benchmarking | 🟡 Planned |
+| Larger benchmark corpora | 🟡 Planned |
 
 ## Why this matters
 
@@ -40,6 +48,7 @@ This repository shows a first-step **evaluation harness** for testing those risk
 src/
   models.py
   evaluator.py
+  metrics.py
   report.py
 
 datasets/
@@ -47,10 +56,17 @@ datasets/
 
 tests/
   test_evaluator.py
+  test_metrics.py
   test_report.py
 
 reports/
   sample_summary.md
+
+screenshots/
+  rag-security-eval-demo.svg
+
+case-studies/
+  rag-security-eval-case-study.md
 
 .github/workflows/
   ci.yml
@@ -88,6 +104,20 @@ Based on:
 - exfiltration-style instructions,
 - system-prompt override language.
 
+## Metrics
+
+The sample dataset now includes expected risk labels. The report computes:
+
+- true positives,
+- false positives,
+- true negatives,
+- false negatives,
+- attack detection rate,
+- false positive rate,
+- false negative rate.
+
+These metrics are intentionally simple and transparent. They are designed to show how a RAG security harness can move from qualitative examples toward measurable evaluation.
+
 ## Quickstart
 
 ```bash
@@ -108,8 +138,8 @@ python -m src.report
 2. Add a retrieval contamination score
 3. Add source policy rules
 4. Add optional local-model or API-model response evaluation
-5. Add attack success-rate metrics
-6. Add CSV/JSON report exports
+5. Add CSV/JSON report exports
+6. Add model-in-the-loop metrics with a fixed benchmark set
 
 ## Portfolio value
 
@@ -118,6 +148,7 @@ This repository demonstrates:
 - Retrieval poisoning awareness
 - Dataset-driven security evaluation
 - Testability over vague “guardrails”
+- Measurable AI security evaluation
 - AI Security applied to enterprise knowledge systems
 
 ## Limitations

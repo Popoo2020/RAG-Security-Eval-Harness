@@ -5,6 +5,7 @@ from collections import Counter
 from pathlib import Path
 
 from .evaluator import evaluate_case
+from .metrics import compute_metrics
 from .models import RetrievalCase
 
 
@@ -13,11 +14,16 @@ def load_cases(path: Path) -> list[RetrievalCase]:
     return [RetrievalCase(**item) for item in raw]
 
 
+def _percentage(value: float) -> str:
+    return f"{value:.0%}"
+
+
 def build_summary() -> str:
     repo_root = Path(__file__).resolve().parent.parent
     cases = load_cases(repo_root / "datasets" / "sample_cases.json")
     results = [evaluate_case(case) for case in cases]
     counts = Counter(result.risk_level for result in results)
+    metrics = compute_metrics(cases, results)
 
     lines = [
         "# RAG Security Evaluation Summary",
@@ -28,15 +34,29 @@ def build_summary() -> str:
         f"- MEDIUM: **{counts.get('MEDIUM', 0)}**",
         f"- LOW: **{counts.get('LOW', 0)}**",
         "",
+        "## Evaluation metrics",
+        "",
+        f"- Labelled cases: **{metrics.total_cases}**",
+        f"- True positives: **{metrics.true_positives}**",
+        f"- False positives: **{metrics.false_positives}**",
+        f"- True negatives: **{metrics.true_negatives}**",
+        f"- False negatives: **{metrics.false_negatives}**",
+        f"- Attack detection rate: **{_percentage(metrics.attack_detection_rate)}**",
+        f"- False positive rate: **{_percentage(metrics.false_positive_rate)}**",
+        f"- False negative rate: **{_percentage(metrics.false_negative_rate)}**",
+        "",
         "## Case results",
         "",
-        "| Case | Risk | Signals |",
-        "|---|---|---|",
+        "| Case | Expected | Actual | Signals |",
+        "|---|---|---|---|",
     ]
 
+    expected_by_case_id = {case.case_id: case.expected_risk or "-" for case in cases}
     for result in results:
         signals = ", ".join(result.signals) if result.signals else "-"
-        lines.append(f"| {result.case_id} | {result.risk_level} | {signals} |")
+        lines.append(
+            f"| {result.case_id} | {expected_by_case_id[result.case_id]} | {result.risk_level} | {signals} |"
+        )
 
     return "\n".join(lines) + "\n"
 

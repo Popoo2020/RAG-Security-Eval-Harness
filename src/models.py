@@ -12,6 +12,7 @@ class RetrievalCase:
     case_id: str
     source_trust: SourceTrust
     retrieved_text: str
+    expected_risk: RiskLevel | None = None
 
 
 @dataclass(frozen=True)
